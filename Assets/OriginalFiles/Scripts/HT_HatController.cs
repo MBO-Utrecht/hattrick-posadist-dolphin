@@ -1,12 +1,17 @@
 using UnityEngine;
 using System.Collections;
+using UnityEditor.AnimatedValues;
 
 public class HT_HatController : MonoBehaviour {
 
 	public Camera cam;
-
+	
 	private float maxWidth;
 	private bool canControl = false;
+
+    private GameObject ball;
+	private GameObject bomb;
+	private float hatWidth;
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +32,59 @@ public class HT_HatController : MonoBehaviour {
 			float targetWidth = Mathf.Clamp (targetPosition.x, -maxWidth, maxWidth);
 			targetPosition = new Vector3 (targetWidth, targetPosition.y, targetPosition.z);
 			GetComponent<Rigidbody2D>().MovePosition (targetPosition);
+		}
+
+		else
+		{
+			if (!ball)
+			{
+				if (GameObject.FindGameObjectWithTag("Ball"))
+				{
+                    ball = GameObject.FindGameObjectWithTag("Ball");
+                }
+				
+			}
+
+			if (!bomb)
+			{
+				if (GameObject.FindGameObjectWithTag("Bomb"))
+				{
+					bomb = GameObject.FindGameObjectWithTag("Bomb");
+				}
+			}
+			
+			if (bomb != null)
+			{
+				if ((Mathf.Abs(transform.localPosition.x) - Mathf.Abs(bomb.transform.localPosition.x)) < 1)
+				{
+					if (transform.localPosition.x <= 0)
+					{
+                        transform.localPosition -= new Vector3(10 * Time.deltaTime, 0 , 0);
+                    }
+
+					else
+					{
+                        transform.localPosition += new Vector3(10 * Time.deltaTime, 0, 0);
+                    }
+				}
+
+            }
+
+			else if (ball != null)
+			{
+                Vector3 targetPosition = new Vector3(ball.transform.position.x, 0f, 0f);
+                if (targetPosition.x + hatWidth < transform.localPosition.x)
+				{
+					transform.localPosition -= new Vector3(10 * Time.deltaTime, 0, 0);
+				}
+
+                if (targetPosition.x - hatWidth > transform.localPosition.x)
+                {
+                    transform.localPosition += new Vector3(10 * Time.deltaTime, 0 , 0);
+                }
+            }
+
+
 		}
 	}
 

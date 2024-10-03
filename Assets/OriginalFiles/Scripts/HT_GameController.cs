@@ -51,7 +51,7 @@ public class HT_GameController : MonoBehaviour {
 		splashScreen.SetActive (false);
 		startButton.SetActive (false);
 		restartButton.SetActive(false);
-		hatController.ToggleControl (true);
+		//hatController.ToggleControl (true);
 		timeLeft = 120;
 		StartCoroutine (Spawn ());
 	}
